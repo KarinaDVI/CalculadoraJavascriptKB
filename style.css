@@ -1,0 +1,151 @@
+*{
+    list-style: none;
+    font-family: sans-serif;
+    
+}
+a{
+    text-decoration: none;
+    color:#333333;
+}
+
+header{
+    height:15%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+h1,h4,a{
+    color:#333333;
+    font-family: monospace;
+}
+
+body{
+    height:100vh;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    background-image:radial-gradient(ellipse at bottom, #f4e584, transparent),
+                     radial-gradient(ellipse at top, #9dc7bb, transparent);            
+                      
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow:hidden;
+}
+
+main {
+    display:flex;
+    height:80%;
+    margin: 10px;
+    padding: 5px 7px 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    height:5%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding:5%;
+    gap:2%;
+}
+
+footer div{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer img{
+    align-self: center;
+    width: 4vw;
+    padding-bottom: 1%;
+}
+
+thead,thead tr, thead tr th{
+    display:block;
+    border-radius: 10px;
+    background-color: rgba(111, 182, 136, 0.626);
+    margin:0;
+}
+
+input {
+    text-align: right;
+    background-color: rgba(111, 182, 136, 0.626);
+    width: 330px;
+    margin-bottom: 10px;
+    margin:0;
+    border:none;
+}
+thead>tr>th:first-child>input{
+    font-size:x-large;
+    text-align: center;
+}
+
+thead>tr>th:nth-child(2)>input{
+    font-size:xx-large;
+}
+
+thead>tr>th:last-child>input{
+    font-size: small;
+    margin: 0 20%;
+    width: 60%;
+    text-align: left;
+}
+
+table {
+    display: block;
+    padding: 20px;
+    background-color:dimgrey;
+    box-shadow: 5px 5px 5px 5px #333333;
+    border-radius: 5%;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width:fit-content;
+}   
+
+.displaytable {
+    display: table;
+}
+
+.displaytable-cell {
+    display: table-cell;
+}
+  
+.button {
+    width: 60px;
+    height: 35px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.blackbutton { 
+    background-color: black; 
+    color: white;
+}
+
+.greenbutton {
+    background-color: #91ff7d;
+}
+
+.greybutton {
+    background-color: #cccccc;
+}
+
+.bluebutton {
+    background-color: #6288f3;
+}
+
+.redbutton {
+    background-color: #f76767;
+}
+
+
+
