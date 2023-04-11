@@ -4,16 +4,25 @@ class Calculadora{
 
         this.cadenaCalculo = ""
         this.numeros=["1","2","3","4","5","6","7","8","9","0"]
-        this.operations =["+","-","x","/",".","(",")","n!",
-                            "x^2","x^3","10^x","sin","cos","tan","x^-1",
-                        "sqrt","log","ln","e","π"]
-        this.commands =["CE","C","M+","M-","Del","=","MC","MR","MS"]
+
+        this.operations =["+","-","/",".","(",")","x","n!","x^2","x^3","10^x","sin","cos","tan","x^-1",
+        "sqrt","log","ln","e","π","%"]
+
+        this.fancy=["x","n!","^2","^3","10^","sin","cos","tan","^(-1)",
+    "^(1/2)","log","ln","e","π","%"]
+
+        this.changer=["*","this.nFactorial","**2","**3","10**","Math.sin",
+        "Math.cos","Math.tan","**(-1)","**(1/2)","Math.log10","Math.log",
+        "Math.E","Math.PI","*(1/100)"]
+
+        this.commands =["CE","C","M+","M-","Del","=","MC","MR","MS","ANS","ON"]
         this.positionKeys =["<=","=>"]
         this.button = document.querySelector("button")
         this.display=document.getElementById("displayBox");
         this.displayC=document.getElementById("displayCalc");
         this.displayInfo=document.getElementById("displayInfo");
-        this.cont=this.displayC.value.length+1
+        this.cont=this.displayC.value.length
+        this.solved=0;
 
         this.memoryChain=0
 
@@ -29,12 +38,10 @@ class Calculadora{
     identificarTecla(text){
         let message=""
         if(this.numeros.includes(text)){
-            this.cadenaCalculo.lenght==0?display.value="":this.display.value;
-            this.display.value+=text;
-            this.cadenaCalculo+=text;
-            this.displayC.value+=text;
-            
-            this.escribir(this.cadenaCalculo)
+           
+            this.displayC.value=this.insert(text);
+
+            this.escribir("displayC.value en identificarTecla: "+this.displayC.value)
             message="es numero"
         }
         else if(this.operations.includes(text)){
@@ -47,31 +54,71 @@ class Calculadora{
         }
         else if(this.positionKeys.includes(text)){
             this.tipoPosition(text)
-            message="cambia posicion"
+            message="cambia cursor de lugar"
         }
         else{
             message="error"
         }
-        
+        this.displayC.focus()
+        this.displayC.setSelectionRange(this.cont, this.cont)
         return message
         }
+//Inserta valores en la cadena del display
+        insert(char) {
 
-        calcular(){
+            let added =char//text
+            let start = this.cont
+            let end = this.displayC.value.length
             
-            try {
-                let result= parseFloat(eval(this.cadenaCalculo == "" ? "" :this.cadenaCalculo));
+            let chain1 = this.displayC.value.substring(0, start)
+            let chain2 = this.displayC.value.substring(start, end)
+            this.displayC.value = chain1 + added + chain2
+            this.escribir("chain1: "+chain1+" added: "+added+" "+"chain2: "+chain2)
+            console.log("added value: "+added+" cont value: "+this.cont+ " added length "+added.length)
+            this.cont+=added.length
+            return this.displayC.value
+          } 
+    /*Cambia los values de las teclas por expresiones matematicas y las inserta
+    en la cadena de calculo*/
+          changeElement(texto) {
+            
+             //let cadena=
+            /*for (let i in this.fancy) {
+                this.texto= texto.replace(this.fancy[i], this.changer[i]);
+                this.escribir("changeElement cadena: "+texto)
+            }
+              
+              return texto;
+            } 
+            */
+           
+            this.escribir(texto)
+            for (let i = 0; i < this.fancy.length; i++) {
+                let busqueda = this.fancy[i];
+                texto = texto.replace(busqueda, this.changer[i]);
+                this.escribir("changeElement "+i+" cadena: "+texto)
+              }
+              this.escribir("changeElement cadena: "+texto)
+              return texto;
+            }
+        
+
+    //Calcula evaluando la cadena de calculo
+        calcular(){
+             try { 
+                //this.cadenaCalculo = this.displayC.value
+                this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
+                //this.cadenaCalculo="2*2-1"
+                let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
                 this.display.value="";
                 this.display.value=result;
+                this.solved=result
                 this.escribir(result)
-                //this.cadenaCalculo=result;
-                
-                
-            return result
+             return result
             } catch (error) {
                 return this.display.value="Error"
 
-            }
-            
+            } 
         }
 
     tipoComando(text){
@@ -89,16 +136,13 @@ class Calculadora{
                 this.display.value="";
                 this.cadenaCalculo="";
                 this.displayC.value="";
+                this.displayInfo.value=""
+                this.cont=0;
                 break
 
             case "Del":
-
-                let temporal =  this.cadenaCalculo.slice(0, -1);
-                //this.display.value=temporal
-                this.display.value=""
-                this.displayC.value=temporal
-                this.cadenaCalculo=temporal
-                this.escribir(this.cadenaCalculo)
+                this.erase()
+                
                 break
 
             case "M+":
@@ -125,6 +169,10 @@ class Calculadora{
                 this.memoryChain=this.display.value;
                 this.displayInfo.value="MS"
                 break
+            case "ANS":
+                this.displayC.value+=this.solved
+                this.solved==""?this.display.value=0:this.display.value=this.solved
+                break
             default:
                 this.display.value="0";
             
@@ -133,129 +181,109 @@ class Calculadora{
     tipoOperacion(text){
         switch(text){
             case "":
-                this.cadenaCalculo+=this.display.value
+                this.cadenaCalculo=this.display.value
                 break
-            case "π":
-                this.cadenaCalculo+=Math.PI;
-                this.display.value+="π"
-                this.displayC.value+="π"
-            break
-            case "log":
-                this.cadenaCalculo+="Math.log10(";
-                this.display.value+="log("
-                this.displayC.value+="log("
-            break
-            case "ln":
-                this.cadenaCalculo+="Math.log(";
-                this.display.value+="ln("
-                this.displayC.value+="ln("
-            break
-
-            case "e":
-                this.cadenaCalculo+="Math.E";
-                this.display.value+="e"
-                this.displayC.value+="e"
-            break
-
-            case "n!":
-                
-                this.cadenaCalculo+="this.nFactorial(";
-                this.display.value+="n!("
-                this.displayC.value+="n!("
-            break
-
-            case "x":
-                
-                this.cadenaCalculo+="*"
-                this.display.value+=text
-                this.displayC.value+=text
-                this.escribir(this.cadenaCalculo)
-                break
-            case ".":
-               
-                this.display.value+=text
-                this.displayC.value+=text
-                this.cadenaCalculo+=text;
-                break
-
-            case "(":
-               
-                this.cadenaCalculo+="("
-                this.display.value+="("
-                this.displayC.value+="(";
-                break
-
             case "x^2":
-                this.cadenaCalculo+="**2"
-                this.display.value+=`^2`
-                this.displayC.value+=`^2`
-                //Para insertar la función
+                this.displayC.value=this.insert(`^2`)
                 break
 
             case "x^3":
-                this.cadenaCalculo+="**3"
-                this.display.value+=`^3`
-                this.displayC.value+=`^3`
+                this.displayC.value=this.insert(`^3`)
                 break
 
             case "10^x":
-                this.cadenaCalculo+="10**("
-                this.display.value+="10^("
-                this.displayC.value+="10^("
+                this.displayC.value=this.insert("10^")
                 break
 
-            case "sin":
-                this.cadenaCalculo+="Math.sin("
-                this.display.value+=`sin(`
-                this.displayC.value+=`sin(`
-                break
+    /**/    case "sin":
+                this.displayC.value=this.insert(`sin`)
+                this.displayInfo.value+="RAD"
+            break
 
             case "cos":
-                this.cadenaCalculo+="Math.cos("
-                this.display.value+=`cos(`
-                this.displayC.value+=`cos(`
+                this.displayC.value=this.insert(`cos`)
+                this.displayInfo.value+="RAD"
                 break
 
             case "tan":
-                this.cadenaCalculo+="Math.tan("
-                this.display.value+=`tan(`
-                this.displayC.value+=`tan(`
-                break
+                this.displayC.value=this.insert(`tan`)
+                this.displayInfo.value+="RAD"
+                break 
                 
             case "x^-1":
-               
-                this.cadenaCalculo+="**(-1)"
-                
-                this.display.value+="^(-1)";
-                this.displayC.value+="^(-1)";
-                this.escribir(this.cadenaCalculo)
+                this.displayC.value=this.insert("^(-1)")
                 break
 
             case "sqrt":
-                this.cadenaCalculo+="**(1/2)"
-                this.display.value+=`^(1/2)`
-                this.displayC.value+=`^(1/2)`
+                this.displayC.value=this.insert(`^(1/2)`)
                 break
 
             default:
-                this.cadenaCalculo+=text;
-                this.display.value+=text;
-                this.displayC.value+=text;
+                this.displayC.value=this.insert(text)
             
         }
-        this.escribir(this.cadenaCalculo)
     }
     tipoPosition(text){
         switch(text){
             case "<=":
                 this.toLeft();
-
             break
             case "=>":
                 this.toRight();
             break
         }
         this.escribir(this.cadenaCalculo)
+    }
+     erase(){
+         let start = this.cont
+        let end = this.displayC.value.length
+        let chain1 
+        let chain2 
+        let chain3  
+
+        if(this.cont===this.displayC.value.length){
+            this.displayC.value =this.displayC.value.slice(0,-1)
+        }
+        else if(this.cont===0){
+            this.displayC.value =this.displayC.value
+            this.displayC.value.length==1?this.cont=1:this.cont=0
+            this.escribir("cont value: "+this.cont)
+
+        }else{
+            chain1 = this.displayC.value.substring(0, (start-1))
+            chain2 = this.displayC.value.substring(start-1, (start))
+            chain3 = this.displayC.value.substring(start,end)
+            this.displayC.value = chain1 + chain3
+            this.escribir("chain1: "+chain1+" chain2: "+chain2+" "+"chain3: "+chain3+" cont: "+this.cont)
+        
+        } 
+        this.cont>0?this.cont--:this.cont=0
+        this.displayC.focus()
+        this.displayC.setSelectionRange(this.cont, this.cont)
+        
+        return this.displayC.value
+    } 
+
+
+     //Al hacer click posiciona el cursor a la izquierda
+    /* Falta la funcionalidad de insertar numeros en la posición en la función
+    de this.identificarTecla y this.calcular, ver métodos setRangeText() y
+    setSelectionRange() */
+    toLeft(){
+        this.displayC.focus()
+        this.cont<0?this.cont=0:this.cont--;
+        this.displayC.setSelectionRange(this.cont, this.cont);
+
+        return this.escribir("izquierda"+" cont: "+this.cont)
+    }
+
+     //Al hacer click posiciona el cursor a la derecha
+     //Idem funcionalidad a toLeft()
+    toRight(){
+        this.displayC.focus()
+        this.cont>=this.displayC.value.length?this.cont=this.displayC.value.length:this.cont++
+        this.displayC.setSelectionRange(this.cont, this.cont);
+        return this.escribir("derecha"+" cont: "+this.cont)
     }
 
     //Factorial
@@ -271,43 +299,35 @@ class Calculadora{
 
     //Función para escribir mensajes
     escribir(texto){
-        return console.log("ingresado "+texto);
+        return console.log("operacion en : "+texto);
+    }
+    active(){
+        calculadora.display.value="";
+        calculadora.cadenaCalculo="";
+        calculadora.displayC.value="";
+        calculadora.displayInfo.value=""
+        calculadora.cont=0;
+        calculadora.solved="";
     }
 
-    //Al hacer click posiciona el cursor a la izquierda
-    /* Falta la funcionalidad de insertar numeros en la posición en la función
-    de this.identificarTecla y this.calcular, ver métodos setRangeText() y
-    setSelectionRange() */
-    toLeft(){
-        this.displayC.focus()
-        this.cont>0?this.cont--:this.cont
-        this.displayC.setSelectionRange(this.cont, this.cont);
-
-
-        return this.escribir(this.cont)
-    }
-     //Al hacer click posiciona el cursor a la derecha
-     //Idem funcionalidad a toLeft()
-    toRight(){
-        this.displayC.focus()
-        this.cont++
-        this.displayC.setSelectionRange(this.cont, this.cont);
-        return this.escribir(this.cont)
-    }
+   
     
-
-    onFocusValue () {
-      this.setSelectionRange(0, 0);
-    }
 }
 
 const calculadora = new Calculadora();
 
-
+let switcher=false
 document.addEventListener("click",(e)=>{
-    if(e.target.tagName==='BUTTON'&& e.target.textContent!==undefined){
+    
+    if(e.target.textContent=="ON"){
+        switcher==false?switcher=true:switcher=false
+        calculadora.active()
+    }
+    if(switcher==true && e.target.tagName==='BUTTON' && e.target.textContent!==undefined){
         let tecla=e.target
         calculadora.identificarTecla(tecla.textContent)
-    }else(calculadora.escribir("no es tecla"))
+
+    }else{(calculadora.escribir("no es tecla"))
+}
 
 })

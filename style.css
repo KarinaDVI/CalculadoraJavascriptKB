@@ -77,6 +77,9 @@ input {
     margin:0;
     border:none;
 }
+input:focus{
+    outline:none
+}
 thead>tr>th:first-child>input{
     font-size:x-large;
     text-align: center;
