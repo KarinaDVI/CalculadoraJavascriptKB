@@ -302,12 +302,13 @@ class Calculadora{
         return console.log("operacion en : "+texto);
     }
     active(){
-        calculadora.display.value="";
-        calculadora.cadenaCalculo="";
-        calculadora.displayC.value="";
-        calculadora.displayInfo.value=""
-        calculadora.cont=0;
-        calculadora.solved="";
+        this.display.value="";
+        this.cadenaCalculo="";
+        this.displayC.value="";
+        this.displayInfo.value=""
+        this.cont=0;
+        this.solved="";
+        this.memoryChain=0;
     }
 
    
