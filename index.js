@@ -301,7 +301,8 @@ class Calculadora{
     escribir(texto){
         return console.log("operacion en : "+texto);
     }
-    active(){
+    active(cond){
+        
         this.display.value="";
         this.cadenaCalculo="";
         this.displayC.value="";
@@ -309,6 +310,18 @@ class Calculadora{
         this.cont=0;
         this.solved="";
         this.memoryChain=0;
+        let nodes=document.querySelectorAll("thead,thead tr,thead tr th, input")
+        cond==true?
+        nodes[0].classList.add("thead-active"):
+        nodes[0].classList.remove("thead-active")
+        nodes.forEach((node) => {
+           cond==true?
+           node.classList.add("displayActive"):
+           node.classList.remove("displayActive");
+           
+
+    });
+        
     }
 
    
@@ -322,7 +335,7 @@ document.addEventListener("click",(e)=>{
     
     if(e.target.textContent=="ON"){
         switcher==false?switcher=true:switcher=false
-        calculadora.active()
+        calculadora.active(switcher)
     }
     if(switcher==true && e.target.tagName==='BUTTON' && e.target.textContent!==undefined){
         let tecla=e.target

@@ -62,16 +62,18 @@ footer img{
     padding-bottom: 1%;
 }
 
+
 thead,thead tr, thead tr th{
     display:block;
     border-radius: 10px;
-    background-color: rgba(111, 182, 136, 0.626);
+    background-color: rgb(76, 122, 92);
     margin:0;
 }
 
 input {
     text-align: right;
-    background-color: rgba(111, 182, 136, 0.626);
+    background-color: rgb(76, 122, 92);
+    
     width: 330px;
     margin-bottom: 10px;
     margin:0;
@@ -94,6 +96,11 @@ thead>tr>th:last-child>input{
     margin: 0 20%;
     width: 60%;
     text-align: left;
+}
+
+thead{
+    border-top:5px groove #315431;
+    border-left:5px groove  #315431; 
 }
 
 table {
@@ -148,6 +155,18 @@ table {
 
 .redbutton {
     background-color: #f76767;
+}
+
+.displayActive{
+    background-color: rgb(111, 182, 136);
+}
+.thead-active {
+    box-shadow: 0px 0px 15px 5px #a1f7bf69;
+    border-top:5px groove #467646;
+    border-left:5px groove  #467646;
+}
+.displayInactive{
+    background-color: rgb(76, 122, 92);
 }
 
 
