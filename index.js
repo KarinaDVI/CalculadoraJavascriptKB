@@ -106,22 +106,24 @@ class Calculadora{
         
 
     //Calcula evaluando la cadena de calculo
-        calcular(){
-             try { 
-                //this.cadenaCalculo = this.displayC.value
-                this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
-                //this.cadenaCalculo="2*2-1"
-                let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
-                this.display.value="";
-                this.display.value=result;
-                this.solved=result
-                this.escribir(result)
-             return result
-            } catch (error) {
-                return this.display.value="Error"
+    calcular(){
+        try { 
+           //this.cadenaCalculo = this.displayC.value
+           this.calcStore.push(this.displayC.value)
+           this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
+           //this.cadenaCalculo="2*2-1"
+           let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
+           this.ansStore.push(result)
+           this.display.value="";
+           this.display.value=result;
+           this.solved=result
+           /* this.escribir(result) */
+        return result
+       } catch (error) {
+           return this.display.value="Error"
 
-            } 
-        }
+       } 
+   }
 
     tipoComando(text){
         switch(text){
