@@ -16,7 +16,7 @@ class Calculadora{
         "Math.E","Math.PI","*(1/100)"]
 
         this.commands =["CE","C","M+","M-","Del","=","MC","MR","MS","ANS","ON"]
-        this.positionKeys =["<=","=>"]
+        this.positionKeys =["▲","▼","◄","►"]
         this.button = document.querySelector("button")
         this.display=document.getElementById("displayBox");
         this.displayC=document.getElementById("displayCalc");
@@ -41,7 +41,7 @@ class Calculadora{
         let message=""
         if(this.numeros.includes(text)){
            
-            this.displayC.value=this.insert(text);
+            this.displayC.value = this.insert(text);
 
             /* this.escribir("displayC.value en identificarTecla: "+this.displayC.value)
             message="es numero" */
@@ -98,14 +98,21 @@ class Calculadora{
         calcular(){
              try { 
                 //this.cadenaCalculo = this.displayC.value
-                this.calcStore.push(this.displayC.value)
+                
                 this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
                 //this.cadenaCalculo="2*2-1"
                 let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
                 this.ansStore.push(result)
-                this.display.value="";
-                this.display.value=result;
-                this.solved=result
+                this.calcStore.push(this.display.value)
+                this.display.value = "";
+                this.display.value = result;
+                this.solved = result;
+                for(let calc in this.calcStore){
+                    this.escribir(calc)
+                }
+                for(let ans in this.ansStore){
+                    this.escribir(ans)
+                }
                 /* this.escribir(result) */
              return result
             } catch (error) {
@@ -222,11 +229,17 @@ class Calculadora{
     }
     tipoPosition(text){
         switch(text){
-            case "<=":
+            case "◄":
                 this.toLeft();
             break
-            case "=>":
+            case "►":
                 this.toRight();
+            break
+            case "▼":
+                this.toBottom();
+            break
+            case "▲":
+                this.toUp();
             break
         }
         /* this.escribir(this.cadenaCalculo) */
@@ -284,20 +297,23 @@ class Calculadora{
     }
     toUp(){
         
-        if(this.pos>=0 && this.pos<=this.calcStore.length){
+        if(this.pos>-1 && this.pos<=this.calcStore.length){
             
-            this.displayC.value=this.calcStore[pos]
-            this.display.value=this.ansStore[pos] 
+            !this.calcStore[this.pos]==undefined?this.displayC.value=this.calcStore[this.pos]:this.displayC.value=0;
+            !this.ansStore[this.pos]==undefined?this.display.value=this.ansStore[this.pos]:this.display.value=0
             this.pos++;
+            this.escribir(this.pos)
         }else{
             this.pos=0;
+            this.escribir(this.pos)
         }
     }
     toBottom(){
-        if(this.pos>=0 && this.pos<=this.calcStore.length){
-            this.displayC.value=this.calcStore[pos]
-            this.display.value=this.ansStore[pos] 
-            this.pos--; 
+        if(this.pos>0 && this.pos<=this.calcStore.length){
+            !this.calcStore[this.pos]==undefined?this.displayC.value=this.calcStore[this.pos]:this.displayC.value=0;
+            !this.ansStore[this.pos]==undefined?this.display.value=this.ansStore[this.pos]:this.display.value=0
+            this.pos--;
+            this.escribir(this.pos) 
         }
     }
 

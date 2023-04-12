@@ -131,7 +131,7 @@ table {
 }
   
 .button {
-    width: 70px;
+    width: 66px;
     height: 45px;
     font-size: 20px;
     border-radius: 5px;
@@ -176,12 +176,13 @@ table {
     grid-template-areas: 'u u u.'
                          'l m r.'
                          'b b b.';
-    width:100%;
     height:100%;
     overflow:hidden;
     background-color: #cccccc;
     border-radius: 50%;
-    border-style: ridge;
+    border-style: groove;
+    margin-bottom:30px;
+    margin-top:-30px;
 }
 /* .m{
     grid-area: m;
@@ -243,10 +244,25 @@ table {
 }
 .round{
     grid-area: m;
+}
+.round button{
     background-color: transparent;
+    border:none;
     border-radius: 50%;
-    width:25px;
-    height:30px;
+    width:20px;
+    height:20px;
+}
+#ans button, #ON-FF button{
+    border-radius: 25px 5px 25px 5px;
+}
+#bPercent button, #bMSave button{
+    border-radius: 5px 25px 5px 25px;
+}
+#bMRead button, #bMClear button{
+    border-radius: 25px 5px 25px 5px;
+}
+#bMAdd button, #bMSub button{
+    border-radius: 5px 25px 5px 25px;
 }
 
 
