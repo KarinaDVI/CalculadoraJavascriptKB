@@ -23,8 +23,10 @@ class Calculadora{
         this.displayInfo=document.getElementById("displayInfo");
         this.cont=this.displayC.value.length
         this.solved=0;
-
         this.memoryChain=0
+        this.pos=0;
+        this.calcStore=[]
+        this.ansStore=[]
 
     }
 
@@ -41,20 +43,20 @@ class Calculadora{
            
             this.displayC.value=this.insert(text);
 
-            this.escribir("displayC.value en identificarTecla: "+this.displayC.value)
-            message="es numero"
+            /* this.escribir("displayC.value en identificarTecla: "+this.displayC.value)
+            message="es numero" */
         }
         else if(this.operations.includes(text)){
             this.tipoOperacion(text)
-            message="es operacion"
+            /* message="es operacion" */
         }
         else if(this.commands.includes(text)){
             this.tipoComando(text);
-            message="es comando"
+           /*  message="es comando" */
         }
         else if(this.positionKeys.includes(text)){
             this.tipoPosition(text)
-            message="cambia cursor de lugar"
+            /* message="cambia cursor de lugar" */
         }
         else{
             message="error"
@@ -73,32 +75,21 @@ class Calculadora{
             let chain1 = this.displayC.value.substring(0, start)
             let chain2 = this.displayC.value.substring(start, end)
             this.displayC.value = chain1 + added + chain2
-            this.escribir("chain1: "+chain1+" added: "+added+" "+"chain2: "+chain2)
-            console.log("added value: "+added+" cont value: "+this.cont+ " added length "+added.length)
+             
+            /* this.escribir("chain1: "+chain1+" added: "+added+" "+" chain2: "+chain2 + " cont value: "+this.cont+ " added length "+added.length) */           
             this.cont+=added.length
             return this.displayC.value
           } 
     /*Cambia los values de las teclas por expresiones matematicas y las inserta
     en la cadena de calculo*/
           changeElement(texto) {
-            
-             //let cadena=
-            /*for (let i in this.fancy) {
-                this.texto= texto.replace(this.fancy[i], this.changer[i]);
-                this.escribir("changeElement cadena: "+texto)
-            }
-              
-              return texto;
-            } 
-            */
-           
-            this.escribir(texto)
+            /* this.escribir(texto) */
             for (let i = 0; i < this.fancy.length; i++) {
                 let busqueda = this.fancy[i];
                 texto = texto.replace(busqueda, this.changer[i]);
-                this.escribir("changeElement "+i+" cadena: "+texto)
+                /* this.escribir("changeElement "+i+" cadena: "+texto) */
               }
-              this.escribir("changeElement cadena: "+texto)
+              /* this.escribir("changeElement cadena: "+texto) */
               return texto;
             }
         
@@ -107,13 +98,15 @@ class Calculadora{
         calcular(){
              try { 
                 //this.cadenaCalculo = this.displayC.value
+                this.calcStore.push(this.displayC.value)
                 this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
                 //this.cadenaCalculo="2*2-1"
                 let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
+                this.ansStore.push(result)
                 this.display.value="";
                 this.display.value=result;
                 this.solved=result
-                this.escribir(result)
+                /* this.escribir(result) */
              return result
             } catch (error) {
                 return this.display.value="Error"
@@ -138,6 +131,10 @@ class Calculadora{
                 this.displayC.value="";
                 this.displayInfo.value=""
                 this.cont=0;
+                this.up=0;
+                this.down=0;
+                this.calcStore=[];
+                this.ansStore=[];
                 break
 
             case "Del":
@@ -232,7 +229,7 @@ class Calculadora{
                 this.toRight();
             break
         }
-        this.escribir(this.cadenaCalculo)
+        /* this.escribir(this.cadenaCalculo) */
     }
      erase(){
          let start = this.cont
@@ -247,14 +244,14 @@ class Calculadora{
         else if(this.cont===0){
             this.displayC.value =this.displayC.value
             this.displayC.value.length==1?this.cont=1:this.cont=0
-            this.escribir("cont value: "+this.cont)
+            /* this.escribir("cont value: "+this.cont) */
 
         }else{
             chain1 = this.displayC.value.substring(0, (start-1))
             chain2 = this.displayC.value.substring(start-1, (start))
             chain3 = this.displayC.value.substring(start,end)
             this.displayC.value = chain1 + chain3
-            this.escribir("chain1: "+chain1+" chain2: "+chain2+" "+"chain3: "+chain3+" cont: "+this.cont)
+            /* this.escribir("chain1: "+chain1+" chain2: "+chain2+" "+"chain3: "+chain3+" cont: "+this.cont) */
         
         } 
         this.cont>0?this.cont--:this.cont=0
@@ -274,7 +271,7 @@ class Calculadora{
         this.cont<0?this.cont=0:this.cont--;
         this.displayC.setSelectionRange(this.cont, this.cont);
 
-        return this.escribir("izquierda"+" cont: "+this.cont)
+        /* return this.escribir("izquierda"+" cont: "+this.cont) */
     }
 
      //Al hacer click posiciona el cursor a la derecha
@@ -283,24 +280,41 @@ class Calculadora{
         this.displayC.focus()
         this.cont>=this.displayC.value.length?this.cont=this.displayC.value.length:this.cont++
         this.displayC.setSelectionRange(this.cont, this.cont);
-        return this.escribir("derecha"+" cont: "+this.cont)
+        /*return this.escribir("derecha"+" cont: "+this.cont)*/
+    }
+    toUp(){
+        
+        if(this.pos>=0 && this.pos<=this.calcStore.length){
+            
+            this.displayC.value=this.calcStore[pos]
+            this.display.value=this.ansStore[pos] 
+            this.pos++;
+        }else{
+            this.pos=0;
+        }
+    }
+    toBottom(){
+        if(this.pos>=0 && this.pos<=this.calcStore.length){
+            this.displayC.value=this.calcStore[pos]
+            this.display.value=this.ansStore[pos] 
+            this.pos--; 
+        }
     }
 
     //Factorial
     nFactorial(n){
         if(n==1 || n==0){
             return 1 
-           
         }else{
             return n*this.nFactorial(n-1)
         }
-        
     }
 
     //Función para escribir mensajes
     escribir(texto){
         return console.log("operacion en : "+texto);
     }
+    //Se ejecuta cuando la calculadora es "encendida"
     active(cond){
         
         this.display.value="";
@@ -333,7 +347,7 @@ const calculadora = new Calculadora();
 let switcher=false
 document.addEventListener("click",(e)=>{
     
-    if(e.target.textContent=="ON"){
+    if(e.target.tagName==='BUTTON' && e.target.textContent=="ON" ){
         switcher==false?switcher=true:switcher=false
         calculadora.active(switcher)
     }
@@ -341,7 +355,7 @@ document.addEventListener("click",(e)=>{
         let tecla=e.target
         calculadora.identificarTecla(tecla.textContent)
 
-    }else{(calculadora.escribir("no es tecla"))
+    }else{calculadora.escribir("Enciende la calcu y asegurate de oprimir una tecla:)")
 }
 
 })
