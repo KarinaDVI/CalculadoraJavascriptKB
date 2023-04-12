@@ -25,7 +25,9 @@ class Calculadora{
         this.solved=0;
 
         this.memoryChain=0
-
+        this.pos=0;
+        this.calcStore=[]
+        this.ansStore=[]
     }
 
    
