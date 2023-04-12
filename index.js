@@ -295,6 +295,7 @@ class Calculadora{
         this.displayC.setSelectionRange(this.cont, this.cont);
         /*return this.escribir("derecha"+" cont: "+this.cont)*/
     }
+    //Arreglar Este. Enlaza desde calcular()
     toUp(){
         
         if(this.pos>-1 && this.pos<=this.calcStore.length){
@@ -308,7 +309,9 @@ class Calculadora{
             this.escribir(this.pos)
         }
     }
+    //Arreglar este. Enlaza desde calcular()
     toBottom(){
+        
         if(this.pos>0 && this.pos<=this.calcStore.length){
             !this.calcStore[this.pos]==undefined?this.displayC.value=this.calcStore[this.pos]:this.displayC.value=0;
             !this.ansStore[this.pos]==undefined?this.display.value=this.ansStore[this.pos]:this.display.value=0
