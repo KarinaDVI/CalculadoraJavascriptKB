@@ -14,6 +14,7 @@ header{
     justify-content: center;
     align-items: center;
 }
+
 h1,h4,a{
     color:#333333;
     font-family: monospace;
@@ -130,8 +131,8 @@ table {
 }
   
 .button {
-    width: 60px;
-    height: 35px;
+    width: 66px;
+    height: 45px;
     font-size: 20px;
     border-radius: 5px;
 }
@@ -167,6 +168,101 @@ table {
 }
 .displayInactive{
     background-color: rgb(76, 122, 92);
+}
+.grid-key{
+    display:grid;
+    justify-content: center;
+    text-align: center;
+    grid-template-areas: 'u u u.'
+                         'l m r.'
+                         'b b b.';
+    height:100%;
+    overflow:hidden;
+    background-color: #cccccc;
+    border-radius: 50%;
+    border-style: groove;
+    margin-bottom:30px;
+    margin-top:-30px;
+}
+/* .m{
+    grid-area: m;
+    display:flex;
+    justify-content: space-between;
+    width:100%;
+} */
+.u{
+    grid-area: u;
+    background-color: transparent;
+    width:100%;
+}
+.u button{
+    border-color:transparent;
+    background-color: transparent;
+}
+.u button:first-child:hover{
+    color:grey;
+}
+.l{
+    grid-area: l;
+    
+    background-color: transparent;
+    text-align: left;
+    width:100%;
+}
+.l button{
+    border-color:transparent;
+    background-color: transparent;
+}
+.l button:first-child:hover{
+    color:grey;
+}
+.r{
+    grid-area: r;
+    background-color: transparent;
+    text-align: right;
+    width:100%;
+}
+.r button{
+    border-color:transparent;
+    background-color: transparent;
+}
+.r button:first-child:hover{
+    color:grey;
+}
+.b{
+    grid-area: b;
+    background-color: transparent;
+    width:100%;
+    border-radius: 0 0 50% 50%;
+}
+.b button{
+    border-color:transparent;
+    background-color: transparent;
+}
+.b button:first-child:hover{
+    color:grey;
+}
+.round{
+    grid-area: m;
+}
+.round button{
+    background-color: transparent;
+    border:none;
+    border-radius: 50%;
+    width:20px;
+    height:20px;
+}
+#ans button, #ON-FF button{
+    border-radius: 25px 5px 25px 5px;
+}
+#bPercent button, #bMSave button{
+    border-radius: 5px 25px 5px 25px;
+}
+#bMRead button, #bMClear button{
+    border-radius: 25px 5px 25px 5px;
+}
+#bMAdd button, #bMSub button{
+    border-radius: 5px 25px 5px 25px;
 }
 
 
