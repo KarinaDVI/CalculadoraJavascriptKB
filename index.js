@@ -330,7 +330,9 @@ class Calculadora{
 
 const calculadora = new Calculadora();
 
-let switcher=false
+window.addEventListener('load', function() {
+    let switcher=false
+    calculadora.active(switcher)
 document.addEventListener("click",(e)=>{
     
     if(e.target.textContent=="ON"){
@@ -342,6 +344,7 @@ document.addEventListener("click",(e)=>{
         calculadora.identificarTecla(tecla.textContent)
 
     }else{(calculadora.escribir("no es tecla"))
-}
+    }
 
+    })
 })
