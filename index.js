@@ -102,17 +102,17 @@ class Calculadora{
                 this.cadenaCalculo=this.changeElement(this.displayC.value.toString())
                 //this.cadenaCalculo="2*2-1"
                 let result= parseFloat(eval(this.cadenaCalculo == "" ? 0 :this.cadenaCalculo));
-                this.ansStore.push(result)
-                this.calcStore.push(this.display.value)
+                this.ansStore.push(result.toString())
+                this.calcStore.push(this.displayC.value.toString())
                 this.display.value = "";
                 this.display.value = result;
                 this.solved = result;
-                for(let calc in this.calcStore){
-                    this.escribir(calc)
-                }
-                for(let ans in this.ansStore){
-                    this.escribir(ans)
-                }
+                for (const calc of this.calcStore) {
+                    this.escribir(calc);
+                  }
+                for (const ans of this.ansStore) {
+                    this.escribir(ans);
+                  }
                 /* this.escribir(result) */
              return result
             } catch (error) {
@@ -295,30 +295,30 @@ class Calculadora{
         this.displayC.setSelectionRange(this.cont, this.cont);
         /*return this.escribir("derecha"+" cont: "+this.cont)*/
     }
-    //Arreglar Este. Enlaza desde calcular()
-    toUp(){
-        
-        if(this.pos>-1 && this.pos<=this.calcStore.length){
-            
-            !this.calcStore[this.pos]==undefined?this.displayC.value=this.calcStore[this.pos]:this.displayC.value=0;
-            !this.ansStore[this.pos]==undefined?this.display.value=this.ansStore[this.pos]:this.display.value=0
-            this.pos++;
-            this.escribir(this.pos)
-        }else{
-            this.pos=0;
-            this.escribir(this.pos)
+
+    toBottom() {
+        if (this.pos > 0) {
+          this.pos--;
+          this.displayC.value = this.calcStore[this.pos];
+          this.display.value = this.ansStore[this.pos];
+          this.displayInfo.value=this.pos
+        } else {
+          this.displayInfo.value=this.pos
+          this.pos=0;
         }
-    }
-    //Arreglar este. Enlaza desde calcular()
-    toBottom(){
-        
-        if(this.pos>0 && this.pos<=this.calcStore.length){
-            !this.calcStore[this.pos]==undefined?this.displayC.value=this.calcStore[this.pos]:this.displayC.value=0;
-            !this.ansStore[this.pos]==undefined?this.display.value=this.ansStore[this.pos]:this.display.value=0
-            this.pos--;
-            this.escribir(this.pos) 
+      }
+
+    toUp() {
+        if (this.pos < this.calcStore.length - 1) {
+          this.pos++;
+          this.displayC.value = this.calcStore[this.pos];
+          this.display.value = this.ansStore[this.pos];
+          this.displayInfo.value=this.pos
+        } else {
+            this.displayInfo.value=this.pos
+            this.pos=this.calcStore.length - 1
         }
-    }
+      }
 
     //Factorial
     nFactorial(n){
@@ -331,7 +331,7 @@ class Calculadora{
 
     //Función para escribir mensajes
     escribir(texto){
-        return console.log("operacion en : "+texto);
+        return console.log(`operacion en : ${texto}`);
     }
     //Se ejecuta cuando la calculadora es "encendida"
     active(cond){
@@ -356,9 +356,6 @@ class Calculadora{
     });
         
     }
-
-   
-    
 }
 
 const calculadora = new Calculadora();
